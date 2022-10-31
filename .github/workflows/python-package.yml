@@ -4,22 +4,28 @@ on:
   - cron:  '45 02 * * *'
   workflow_dispatch:
 jobs:
-  sync_with_upstream:
+   build:
     runs-on: ubuntu-latest
-    name: auto checkin for traffic
-
+    name: auto checkin
+    
     steps:
     - name: checkout
       uses: actions/checkout@v2
       with:
         ref: master
-
+        
     - name: checkin
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-        architecture: 'x64'
-    - run: python ./AutoCheck.py
+        
+    - name: Random sleep
+      if: github.event_name == 'schedule'
+      run: sleep $(shuf -i 10-300 -n 1)
 
-    - name: timestamp
-      run: date
+
+
+
+
+    - name: Run sign
+      run: python ./autocheck.py
