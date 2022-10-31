@@ -4,7 +4,7 @@ import requests
 from requests.packages import urllib3
 urllib3.disable_warnings()
 # 模拟浏览器代理
-headers = {
+headers = { 
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/82.0.4051.0 Safari/537.36 Edg/82.0.425.0'}
 
 # 赋值给url
