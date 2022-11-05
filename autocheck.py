@@ -4,7 +4,7 @@ import requests
 from requests.packages import urllib3
 urllib3.disable_warnings()
 # 模拟浏览器代理
-headers = { 
+headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/82.0.4051.0 Safari/537.36 Edg/82.0.425.0'}
 
 # 赋值给url
@@ -17,7 +17,7 @@ login_url = url+'/auth/login'
 password = '123456789'
 # email = 'killercontact1740@gmail.com'
 email = 'tomxingwu.501@gmail.com'
-base_url = 'https://purefast.net'
+
 params = {
 
 }
@@ -30,8 +30,8 @@ response = requests.get(login_url, headers=headers, verify=False)
 # print(response.)
 
 
-def customize():
-    login_url = domain + params.get("login", "/auth/login")
+def customize(url):
+    login_url = url + params.get("login", "/auth/login")
     # post_data = 'email=' + email + '&passwd=' + password + '&code='
     # post_data = post_data.encode()
     # print(post_data)
@@ -41,7 +41,7 @@ def customize():
     }
     print(postdata)
     session = requests.session()
-    response = session.post(login_url, postdata,
+    response = session.post(url+'/auth/login', postdata,
                             headers=headers, verify=False)
     # response = session.post(login_url, post_data,
     #                         headers=headers, verify=False)
@@ -61,7 +61,7 @@ def customize():
     # print(response.status_code)
 
     # 签到
-    response = session.post(base_url + '/user/checkin',
+    response = session.post(url + '/user/checkin',
                             headers=headers, verify=False)
     print(response.text)
     print('(============================)')
@@ -69,11 +69,20 @@ def customize():
 
 
 if __name__ == "__main__":
+    base_url = 'https://purefast.net'
     password = '123456789'
     # email = 'killercontact1740@gmail.com'
     email = 'tomxingwu.501@gmail.com'
-    customize()
+    customize(base_url)
     password = '123456789'
     email = 'killercontact1740@gmail.com'
     # email = 'tomxingwu.501@gmail.com'
-    customize()
+    customize(base_url)
+    base_url = 'https://ikuuu.co'
+    password = '123456789'
+    email = 'killercontact1740@gmail.com'
+    customize(base_url)
+    email = 'tammar.ag.x.2.9.b.18@gmail.com'
+    customize(base_url)
+    email = 'tomxingw.u502@gmail.com '
+    customize(base_url)
