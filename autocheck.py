@@ -2,10 +2,14 @@
 from tabnanny import check
 import requests
 from requests.packages import urllib3
+import base64
+
 urllib3.disable_warnings()
 # 模拟浏览器代理
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/82.0.4051.0 Safari/537.36 Edg/82.0.425.0'}
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) '
+                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/82.0.4051.0 Safari/537.36 Edg/82.0.425.0',
+}
 
 # 赋值给url
 # url = 'https://www.jiemian.com/article/6345408.html'
@@ -13,7 +17,7 @@ headers = {
 # url = 'https://dict.eudic.net/dicts/en/%20complicate'
 url = 'https://purefast.net'
 domain = url
-login_url = url+'/auth/login'
+login_url = url + '/auth/login'
 password = '123456789'
 # email = 'killercontact1740@gmail.com'
 email = 'tomxingwu.501@gmail.com'
@@ -24,6 +28,7 @@ params = {
 # 将获取到的数据存到response变量中
 # response = requests.get(url, headers=headers, verify=False)
 response = requests.get(login_url, headers=headers, verify=False)
+
 
 # 打印网页源码
 # print(response.text)
@@ -41,7 +46,7 @@ def customize(url):
     }
     print(postdata)
     session = requests.session()
-    response = session.post(url+'/auth/login', postdata,
+    response = session.post(url + '/auth/login', postdata,
                             headers=headers, verify=False)
     # response = session.post(login_url, post_data,
     #                         headers=headers, verify=False)
@@ -64,7 +69,7 @@ def customize(url):
     response = session.post(url + '/user/checkin',
                             headers=headers, verify=False)
     print(response.text)
-    print('(============================)')
+    print('(++++++++++++++++++++++++++++++)')
     # 已测试成功，可以签到。
 
 
@@ -85,4 +90,7 @@ if __name__ == "__main__":
     email = 'tammar.ag.x.2.9.b.18@gmail.com'
     customize(base_url)
     email = 'tomxingw.u502@gmail.com '
+    customize(base_url)
+    base_url = 'https://www.cxkv2.xyz'
+    email = 'tomxingwu501@gmail.com'
     customize(base_url)
