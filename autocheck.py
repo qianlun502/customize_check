@@ -69,7 +69,7 @@ def customize(url):
     response = session.post(url + '/user/checkin',
                             headers=headers, verify=False)
     print(response.text)
-    print('(++++++++++++++++++++++++++++++)')
+    print('(++++++++++++++++++++++++++++++ finished)')
     # 已测试成功，可以签到。
 
 
