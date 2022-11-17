@@ -74,15 +74,15 @@ def customize(url):
 
 
 if __name__ == "__main__":
-    base_url = 'https://purefast.net'
-    password = '123456789'
-    # email = 'killercontact1740@gmail.com'
-    email = 'tomxingwu.501@gmail.com'
-    customize(base_url)
-    password = '123456789'
-    email = 'killercontact1740@gmail.com'
+    # base_url = 'https://purefast.net'
+    # password = '123456789'
+    # # email = 'killercontact1740@gmail.com'
     # email = 'tomxingwu.501@gmail.com'
-    customize(base_url)
+    # customize(base_url)
+    # password = '123456789'
+    # email = 'killercontact1740@gmail.com'
+    # # email = 'tomxingwu.501@gmail.com'
+    # customize(base_url)
     base_url = 'https://ikuuu.co' 
     password = '123456789'
     email = 'killercontact1740@gmail.com'
