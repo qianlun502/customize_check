@@ -21,7 +21,7 @@
     // request.responseType();
     request.setRequestHeader("content-type", "application/json");
     request.send();
-    request.onreadystatechange = function () {
+    /*  request.onreadystatechange = function () {
       //这里是异步回调
       logger.log("logout");
       if (
@@ -33,7 +33,8 @@
         logger.log("已退出");
         return 200;
       }
-    };
+    }; */
+    if (request.status === 200) console.log(request.status);
   };
   let login = function (email, password) {
     logger.log(email);
@@ -52,7 +53,7 @@
     request.setRequestHeader("content-type", "application/json");
     request.send(JSON.stringify(postdata));
     //   request.send(fordata);
-    request.onreadystatechange = function () {
+    /*   request.onreadystatechange = function () {
       logger.log("login");
       if (
         request.readyState === XMLHttpRequest.DONE &&
@@ -69,7 +70,8 @@
         logger.log("重新调用");
         request.send(postdata);
       }
-    };
+    }; */
+    if (request.status === 200) console.log(request.responseText);
   };
   let checkin = function () {
     //   alert("55");
@@ -78,7 +80,7 @@
     request.open("POST", baseUrl + "/user/checkin", false);
     request.setRequestHeader("content-type", "application/json");
     request.send();
-    request.onreadystatechange = function () {
+    /*  request.onreadystatechange = function () {
       logger.log("checkin");
       debugger;
       if (
@@ -88,7 +90,12 @@
         console.log(request.response);
         return "200";
       }
-    };
+    }; */
+    if (request.status === 200) {
+      debugger;
+      console.log(request.responseText);
+      setCookie(email);
+    }
   };
   // debugger;
   // checkin();
@@ -210,14 +217,48 @@
   //   await sleep(3000);
   //   console.log("Do other things, " + new Date());
   // })();
-
+  function setCookie(username, value) {
+    let expire = new Date();
+    expire.setHours(expire.getHours());
+    expire.setTime(expire.getTime() + 24 * 60 * 60 * 1000);
+    document.cookie =
+      username + "=" + value + ";expires=" + expire.toGMTString() + ";path=/";
+  }
+  function getCookie(email = "123@Gmail.com") {
+    let flag = false;
+    let expire;
+    let cookieArr = [];
+    if (document.cookie.length > 0) {
+      cookieArr = document.cookie.split(";");
+    }
+    cookieArr.forEach((value) => {
+      let value_array = value.split("=");
+      debugger;
+      if (value_array[0].toString() === email.toString()) {
+        console.log(value_array);
+        flag = true;
+      }
+      //   if (value_array[0].trim() == "expires") expire_date = value_array[1];
+    });
+    if (flag == true) return true;
+    return false;
+  }
   async function synchornized() {
-    await new day_checkin("killercontact1740@gmail.com", "123456789").test();
+    email = "killercontact1740@gmail.com";
+    password = "123456789";
+    if (!getCookie(email)) await new day_checkin(email, "123456789").test();
+    else logger.log(email, "存在");
+
     console.log("Do some thing, " + new Date());
     await sleep(3000);
     logout_code = logout();
     console.log("Do other things, " + new Date());
-    new day_checkin(email, password).test();
+
+    email = "tomxingwu.501@gmail.com";
+    password = "123456789";
+    if (!getCookie(email)) new day_checkin(email, password).test();
+    else logger.log(email + "存在");
+
     await sleep(3000);
     logout_code = logout();
     logger.error("执行完毕");
