@@ -84,7 +84,7 @@
     request.send();
     /*  request.onreadystatechange = function () {
       logger.log("checkin");
-      
+
       if (
         request.readyState === XMLHttpRequest.DONE &&
         request.status === 200
@@ -94,13 +94,13 @@
       }
     }; */
     if (request.status === 200) {
-      
+
       console.log(request.responseText);
       setCookie(email);
       alert_text += request.responseText + "\n";
     }
   };
-  // 
+  //
   // checkin();
 
   let email, password;
@@ -118,7 +118,7 @@
         }
         login(email, password);
       }, 5); */
-  /* 
+  /*
       email = "killercontact1740@gmail.com";
       password = "123456789";
       setTimeout(() => {
@@ -151,7 +151,7 @@
     })
       .then(
         (res) => {
-          // 
+          //
           return checkin();
         },
         (res) => {
@@ -186,18 +186,16 @@
   }
   day_checkin.prototype.test = function () {
     return new Promise((resolve, reject) => {
-      // 
+      //
       let login_code;
       // while (login_code != "200")
       login_code = login(this.email, this.password); //当 XMLHTtpservlet open()设置为true时，login里面有异步回调，这里不会等待回调执行完，直接进行then后面的操作。所以会造成执行顺序混乱。
       resolve();
     })
       .then(() => {
-        // 
+        //
         let checkin_code = "";
-        while (checkin_code != "200") {
-        checkin_code = checkin();
-        }
+       checkin_code = checkin();
       })
       .then(() => {
         logout();
@@ -224,7 +222,7 @@
   //   await sleep(3000);
   //   console.log("Do other things, " + new Date());
   // })();
-  function setCookie(username, value) {
+  function setCookie(username, value=new Date().toLocaleString()) {
     let expire = new Date();
     expire.setHours(expire.getHours());
     expire.setTime(expire.getTime() + 24 * 60 * 60 * 1000);
@@ -240,7 +238,7 @@
     }
     cookieArr.forEach((value) => {
       let value_array = value.split("=");
-      
+
       if (value_array[0].toString() === email.toString()) {
         console.log(value_array);
         flag = true;
@@ -298,7 +296,7 @@
     logger.error("执行完毕");
     alert(alert_text);
     console.log(alert_text);
-    
+
     post_weixin(new Date().toLocaleDateString() + "签到", alert_text);
     // post_weixin(new Date().getDate() + "签到", alert_text);
   }
