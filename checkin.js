@@ -13,7 +13,7 @@
 (function () {
   ("use strict");
   let baseUrl = "https://purefast.net";
-
+  let alert_text = "";
   let logout = function () {
     let request = new XMLHttpRequest();
     request.open("GET", baseUrl + "/user/logout", false); //false为同步，true为开启异步
@@ -34,7 +34,8 @@
         return 200;
       }
     }; */
-    if (request.status === 200) console.log(request.status);
+    if (request.status === 200) console.log(request.status + "exit");
+    alert_text += request.status + "exit" + "\n";
   };
   let login = function (email, password) {
     logger.log(email);
@@ -72,6 +73,7 @@
       }
     }; */
     if (request.status === 200) console.log(request.responseText);
+    alert_text += email + "\n" + request.responseText + "\n";
   };
   let checkin = function () {
     //   alert("55");
@@ -95,6 +97,7 @@
       debugger;
       console.log(request.responseText);
       setCookie(email);
+      alert_text += request.responseText + "\n";
     }
   };
   // debugger;
@@ -188,13 +191,17 @@
       // while (login_code != "200")
       login_code = login(this.email, this.password); //当 XMLHTtpservlet open()设置为true时，login里面有异步回调，这里不会等待回调执行完，直接进行then后面的操作。所以会造成执行顺序混乱。
       resolve();
-    }).then(() => {
-      // debugger;
-      let checkin_code = "";
-      // while (checkin_code != "200") {
-      checkin_code = checkin();
-      // }
-    });
+    })
+      .then(() => {
+        // debugger;
+        let checkin_code = "";
+        // while (checkin_code != "200") {
+        // checkin_code = checkin();
+        // }
+      })
+      .then(() => {
+        logout();
+      });
   };
   day_checkin.prototype.setCookie = function () {
     var timestamp = new Date();
@@ -243,6 +250,33 @@
     if (flag == true) return true;
     return false;
   }
+  function post_weixin(title, msg) {
+    let token = "409ea8a9a1cc4854ad3ca04c019dcc81";
+    let data = {
+      token: token,
+      title: title,
+      content: msg,
+      template: "html",
+      channel: "wechat",
+    };
+    let url = "https://www.pushplus.plus/api/send";
+    // let url = "http://www.pushplus.plus/send";
+    let headers = {
+    /*   "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36", */
+      // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      "Content-Type": "application/json",
+    };
+    let request = new XMLHttpRequest();
+    request.open("POST", url);
+
+    for (let name in headers) {
+      request.setRequestHeader(name, headers[name]);
+    }
+
+    request.send(JSON.stringify(data));
+  }
+
   async function synchornized() {
     email = "killercontact1740@gmail.com";
     password = "123456789";
@@ -251,7 +285,7 @@
 
     console.log("Do some thing, " + new Date());
     await sleep(3000);
-    logout_code = logout();
+    // logout_code = logout();
     console.log("Do other things, " + new Date());
 
     email = "tomxingwu.501@gmail.com";
@@ -260,9 +294,15 @@
     else logger.log(email + "存在");
 
     await sleep(3000);
-    logout_code = logout();
+    // logout_code = logout();
     logger.error("执行完毕");
+    alert(alert_text);
+    console.log(alert_text);
+    debugger;
+    post_weixin(new Date().toLocaleDateString() + "签到", alert_text);
+    // post_weixin(new Date().getDate() + "签到", alert_text);
   }
+
   if (window.location.href === "https://purefast.net/auth/login") {
     synchornized();
   }
