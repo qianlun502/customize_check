@@ -97,7 +97,7 @@ def customize(url: str):
     # 已测试成功，可以签到。
 
 
-def msg_regex(obj: str) -> Match[str] | None:
+def msg_regex(obj: str) -> any:
     pattern = re.compile(r'^{.*}$')
     return pattern.match(obj)
 
