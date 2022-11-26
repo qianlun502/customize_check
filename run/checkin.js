@@ -73,7 +73,7 @@
       }
     }; */
     if (request.status === 200) console.log(request.responseText);
-    alert_text += email + "\n" + request.responseText + "\n";
+    alert_text += email + "\n" +  JSON.parse(request.responseText).msg + "\n";
   };
   let checkin = function () {
     //   alert("55");
@@ -97,7 +97,7 @@
 
       console.log(request.responseText);
       setCookie(email);
-      alert_text += request.responseText + "\n";
+      alert_text +=  JSON.parse(request.responseText).msg + "\n";
     }
   };
   //
