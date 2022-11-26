@@ -63,7 +63,7 @@
         console.log(request.response.ret);
         console.log(request.response.msg);
         // console.log(request.responseType);
-        //debugger;
+        //
         // checkin();
         return "200";
       }
@@ -73,7 +73,11 @@
       }
     }; */
     if (request.status === 200) console.log(request.responseText);
-    alert_text += email + "\n" + JSON.parse(request.responseText).msg + "\n";
+<<<<<<< HEAD:checkin.js
+    alert_text += email + "\n" + request.responseText + "\n";
+=======
+    alert_text += email + "\n" +  JSON.parse(request.responseText).msg + "\n";
+>>>>>>> 22c2fe8069804cc64156a01b39da5c24e5b76392:run/checkin.js
   };
   let checkin = function () {
     //   alert("55");
@@ -84,7 +88,7 @@
     request.send();
     /*  request.onreadystatechange = function () {
       logger.log("checkin");
-      debugger;
+
       if (
         request.readyState === XMLHttpRequest.DONE &&
         request.status === 200
@@ -94,13 +98,17 @@
       }
     }; */
     if (request.status === 200) {
-      debugger;
+
       console.log(request.responseText);
       setCookie(email);
-      alert_text += JSON.parse(request.responseText).msg + "\n";
+<<<<<<< HEAD:checkin.js
+      alert_text += request.responseText + "\n";
+=======
+      alert_text +=  JSON.parse(request.responseText).msg + "\n";
+>>>>>>> 22c2fe8069804cc64156a01b39da5c24e5b76392:run/checkin.js
     }
   };
-  // debugger;
+  //
   // checkin();
 
   let email, password;
@@ -118,7 +126,7 @@
         }
         login(email, password);
       }, 5); */
-  /* 
+  /*
       email = "killercontact1740@gmail.com";
       password = "123456789";
       setTimeout(() => {
@@ -151,7 +159,7 @@
     })
       .then(
         (res) => {
-          // debugger;
+          //
           return checkin();
         },
         (res) => {
@@ -186,18 +194,24 @@
   }
   day_checkin.prototype.test = function () {
     return new Promise((resolve, reject) => {
-      // debugger;
+      //
       let login_code;
       // while (login_code != "200")
       login_code = login(this.email, this.password); //当 XMLHTtpservlet open()设置为true时，login里面有异步回调，这里不会等待回调执行完，直接进行then后面的操作。所以会造成执行顺序混乱。
       resolve();
     })
       .then(() => {
+<<<<<<< HEAD:checkin.js
         // debugger;
         let checkin_code = "";
         // while (checkin_code != "200") {
         // checkin_code = checkin();
         // }
+=======
+        //
+        let checkin_code = "";
+       checkin_code = checkin();
+>>>>>>> 22c2fe8069804cc64156a01b39da5c24e5b76392:run/checkin.js
       })
       .then(() => {
         logout();
@@ -224,7 +238,7 @@
   //   await sleep(3000);
   //   console.log("Do other things, " + new Date());
   // })();
-  function setCookie(username, value) {
+  function setCookie(username, value=new Date().toLocaleString()) {
     let expire = new Date();
     expire.setHours(expire.getHours());
     expire.setTime(expire.getTime() + 24 * 60 * 60 * 1000);
@@ -240,7 +254,7 @@
     }
     cookieArr.forEach((value) => {
       let value_array = value.split("=");
-      debugger;
+
       if (value_array[0].toString() === email.toString()) {
         console.log(value_array);
         flag = true;
@@ -298,7 +312,11 @@
     logger.error("执行完毕");
     alert(alert_text);
     console.log(alert_text);
+<<<<<<< HEAD:checkin.js
     debugger;
+=======
+
+>>>>>>> 22c2fe8069804cc64156a01b39da5c24e5b76392:run/checkin.js
     post_weixin(new Date().toLocaleDateString() + "签到", alert_text);
     // post_weixin(new Date().getDate() + "签到", alert_text);
   }
