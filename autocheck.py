@@ -155,15 +155,18 @@ if __name__ == "__main__":
     # email = 'tomxingwu.501@gmail.com'
     # customize(base_url)
 
-    base_url = 'https://ikuuu.co'
-    password = '123456789'
-    email = 'killercontact1740@gmail.com'
-    customize(base_url)
-    email = 'tammar.ag.x.2.9.b.18@gmail.com'
-    customize(base_url)
-    email = 'tomxingw.u502@gmail.com '
-    customize(base_url)
+    # base_url = 'https://ikuuu.co'
+    # password = '123456789'
+    # email = 'killercontact1740@gmail.com'
+    # customize(base_url)
+    # email = 'tammar.ag.x.2.9.b.18@gmail.com'
+    # customize(base_url)
+    # email = 'tomxingw.u502@gmail.com '
+    # customize(base_url)
     base_url = 'https://www.cxkv2.xyz'
+    email = 'tomxingwu501@gmail.com'
+    customize(base_url)
+    base_url = 'https://cut.xn--um0a7bta.org'
     email = 'tomxingwu501@gmail.com'
     customize(base_url)
 
