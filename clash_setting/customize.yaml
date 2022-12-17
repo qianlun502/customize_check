@@ -1,0 +1,378 @@
+#自己定义文件，rule-provider、 proxy-provider 轻松实现自动更新节点、规则、机场订阅链接
+#proxy-provider：提供节点
+#rule-provider：提供规则集，不同的在线规则集，以 url 链接形式提供，包含常见的域名和IP 地址列表，由项目大佬们实时维护的
+#proxy-groups：以“策略组”为单位，对 proxy-provider 提供的节点或者手动添加的节点进行分组管理
+#rule：引用规则集、策略组，以访问目标是否在规则集中为条件，设定本地网络或者节点对其进行访问
+mixed-port: 7890
+allow-lan: false
+external-controller: 127.0.0.1:65454
+secret: 5f8b0c75-ab79-4ab6-833b-697a08b6816f
+dns:
+  enable: true
+  ipv6: false
+  # listen: 0.0.0.0:53
+  # enhanced-mode: redir-host # 或 fake-ip
+  enhanced-mode: fake-ip
+  # # fake-ip-range: 198.18.0.1/16 # 如果你不知道这个参数的作用，请勿修改
+  # fake-ip-filter: # fake-ip 白名单列表
+  #   - '*.lan'
+  #   - localhost.ptlogin2.qq.com
+  use-hosts: true
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+    - https://dns.alidns.com/dns-query
+    - tls://dns.rubyfish.cn:853
+    - tls://13800000000.rubyfish.cn:853
+    #- https://13800000000.rubyfish.cn/
+
+  fallback:
+    # 与 nameserver 内的服务器列表同时发起请求，当规则符合 GEOIP 在 CN 以外时，fallback 列表内的域名服务器生效。
+    - 1.1.1.1 #Cloudflare DNS  https://zhuanlan.zhihu.com/p/53958870
+    - 8.8.8.8
+    - tls://13800000000.rubyfish.cn:853
+    - tls://1.0.0.1:853
+    - tls://dns.google:853
+    #- https://13800000000.rubyfish.cn/
+    # - https://doh.dns.sb/dns-query
+    # - https://dns.cloudflare.com/dns-query
+    # - https://dns.twnic.tw/dns-query
+
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
+proxies:
+  #- { name: '剩余流量：71.03 GB', type: trojan, server: ko3.lianpi.xyz, port: 56145, password: 0e84ec99-7f8e-48a0-9c5b-f546f505e550, udp: true, sni: ko3.lianpi.xyz, skip-cert-verify: true }
+  # - { name: 套餐到期：2022-12-25, type: trojan, server: ko3.lianpi.xyz, port: 56145, password: 0e84ec99-7f8e-48a0-9c5b-f546f505e550, udp: true, sni: ko3.lianpi.xyz, skip-cert-verify: true }
+  - {
+      name: "太韩BGP 03",
+      type: trojan,
+      server: ko3.lianpi.xyz,
+      port: 56145,
+      password: 0e84ec99-7f8e-48a0-9c5b-f546f505e550,
+      udp: true,
+      sni: ko3.lianpi.xyz,
+      skip-cert-verify: true,
+    }
+  #- { name: '群组:@yrjc_group', type: vmess, server: sg7.lianpi.xyz, port: 56345, uuid: 0e84ec99-7f8e-48a0-9c5b-f546f505e550, alterId: 0, cipher: auto, udp: true, tls: true, network: ws, ws-opts: { path: /lianpiwebsocket }, ws-path: /lianpiwebsocket }
+  - {
+      name: "AV的最爱 02",
+      type: trojan,
+      server: jp1.lianpi.xyz,
+      port: 45127,
+      password: 0e84ec99-7f8e-48a0-9c5b-f546f505e550,
+      udp: true,
+      sni: jp1.lianpi.xyz,
+      skip-cert-verify: true,
+    }
+  - {
+      name: "核武器制作优化 SG2",
+      type: ss,
+      server: sg2.lianpi.xyz,
+      port: 61675,
+      cipher: chacha20-ietf-poly1305,
+      password: 0e84ec99-7f8e-48a0-9c5b-f546f505e550,
+      udp: true,
+    }
+proxy-providers:
+  # BL:
+  #   type: http  #直接使用clash 链接
+  #   path: ./profiles/proxies/bl.yaml
+  #   url: "http://www.bfyun.top/api/v1/client/subscribe?token=58f2877860e6af547e58699f8f99702a"
+  #   interval: 3600
+  #   # filter: 'Hong Kong'
+
+  #   health-check:
+  #     enable: true
+  #     url: http://www.google.com/generate_204
+  #     interval: 2
+  Helium_Network_501:
+    type: file #直接引用文件
+    path: ./profiles/proxies/purefast.yaml
+    url: "https://"
+    interval: 3600
+    # filter: 'IEPL-香港'
+    health-check:
+      enable: true
+      url: http://www.google.com/generate_204
+      interval: 300
+  marisaln:
+    type: http
+    path: ./profiles/proxies/zero.marisaln 501.yaml
+    url: "https://zero.marisalnc.com/link/KFd9QXyDA2cWuTCx?clash=1"
+    interval: 3600
+    # filter: '[DIRECT|直接连接]'
+    health-check:
+      enable: true
+      url: http://www.google.com/generate_204
+      interval: 2
+  airport:
+    type: file
+    path: ./profiles/proxies/airport.yml
+    # url: "https://sub.lianpi.tk/api/v1/client/subscribe?token=f20652b4b1ebcdab996eacb18e587c1b#slbabl"
+    interval: 3600
+    # filter: '[DIRECT|直接连接]'
+    health-check:
+      enable: true
+      url: http://www.google.com/generate_204
+      interval: 2
+  # Helium_Network_501:
+  #   type: http
+  #   path: ./profiles/proxies/Helium_Network_501.yaml
+  #   url: "http://www.bfyun.top/api/v1/client/subscribe?token=58f2877860e6af547e58699f8f99702a#slbable"
+  #   interval: 3600
+  #   # filter: '[DIRECT|直接连接]'
+  #   health-check:
+  #     enable: true
+  #     url: http://www.google.com/generate_204
+  #     interval: 2
+
+proxy-groups:
+  - name: PROXY
+    type: url-test
+    url: http://www.google.com/generate_204
+    interval: 2
+    use:
+      - marisaln
+      # - BL
+    # proxies: #单独的节点
+    #   - DIRECT
+  - name: "marisaln 501 负载均衡"
+    type: load-balance
+    use:
+      - marisaln
+    # proxies:
+    #   - marisaln
+    #   # - ss2
+    #   # - vmess1
+    url: " https://www.google.com/generate_204"
+    interval: 2
+  - name: "Helium_Network_501 负载均衡"
+    type: load-balance
+    use:
+      - Helium_Network_501
+    # proxies:
+    #   - marisaln
+    #   # - ss2
+    #   # - vmess1
+    url: " https://www.google.com/generate_204"
+    interval: 2
+
+  - name: "airport负载均衡"
+    type: load-balance
+    use:
+      - airport
+    # proxies:
+    #   - marisaln
+    #   # - ss2
+    #   # - vmess1
+    url: " https://www.google.com/generate_204"
+    interval: 2
+    # strategy: consistent-hashing # or round-robin
+
+  # select is used for selecting proxy or proxy group
+  # you can use RESTful API to switch proxy is recommended for use in GUI.
+  - name: 手动选择
+    type: select
+    # disable-udp: true
+    # use:
+    #   - marisaln
+    proxies:
+      # - DIRECT
+      # - REJECT
+      - airport自动选择501
+      - airport负载均衡
+
+      - marisaln 501 负载均衡
+      - Helium_Network_501 负载均衡
+      - marisaln501自动选择
+      - Helium_Network_501自动选择
+
+  - name: marisaln 501
+    type: select
+    # disable-udp: true
+    use:
+      - marisaln
+    proxies:
+      - marisaln501自动选择
+  - name: Helium_Network_501 selector
+    type: select
+    # disable-udp: true
+    use:
+      - Helium_Network_501
+    proxies:
+      - Helium_Network_501自动选择
+  - name: airport selector
+    type: select
+    # disable-udp: true
+    use:
+      - airport
+    proxies:
+      - airport自动选择
+  - {
+      name: marisaln501自动选择,
+      type: url-test,
+      use: ["marisaln"],
+      url: "http://www.google.com/generate_204",
+      interval: 2,
+    }
+  - {
+      name: airport自动选择,
+      type: url-test,
+      use: ["airport"],
+      url: "http://www.google.com/generate_204",
+      interval: 2,
+    }
+  - {
+      name: Helium_Network_501自动选择,
+      type: url-test,
+      use: ["Helium_Network_501"],
+      url: "http://www.google.com/generate_204",
+      interval: 2,
+    }
+  - {
+      name: airport自动选择501,
+      type: url-test,
+      proxies: ["太韩BGP 03", "AV的最爱 02", "核武器制作优化 SG2"],
+      url: "http://www.google.com/generate_204",
+      interval: 2,
+    }
+rule-providers:
+  reject:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
+    path: ./ruleset/reject.yaml
+    interval: 86400
+
+  icloud:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt"
+    path: ./ruleset/icloud.yaml
+    interval: 86400
+
+  apple:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt"
+    path: ./ruleset/apple.yaml
+    interval: 86400
+
+  google:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt"
+    path: ./ruleset/google.yaml
+    interval: 86400
+
+  proxy:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt"
+    path: ./ruleset/proxy.yaml
+    interval: 86400
+
+  direct:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt"
+    path: ./ruleset/direct.yaml
+    interval: 86400
+
+  private:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt"
+    path: ./ruleset/private.yaml
+    interval: 86400
+
+  gfw:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
+    path: ./ruleset/gfw.yaml
+    interval: 86400
+
+  greatfire:
+    type: http
+    behavior: domain
+    url:
+      "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.tx\
+      t"
+    path: ./ruleset/greatfire.yaml
+    interval: 86400
+
+  tld-not-cn:
+    type: http
+    behavior: domain
+    url:
+      "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.t\
+      xt"
+    path: ./ruleset/tld-not-cn.yaml
+    interval: 86400
+
+  telegramcidr:
+    type: http
+    behavior: ipcidr
+    url:
+      "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr\
+      .txt"
+    path: ./ruleset/telegramcidr.yaml
+    interval: 86400
+
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
+    path: ./ruleset/cncidr.yaml
+    interval: 86400
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+
+  applications:
+    type: http
+    behavior: classical
+    url:
+      "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications\
+      .txt"
+    path: ./ruleset/applications.yaml
+    interval: 86400
+
+# rules:
+#   - DOMAIN-SUFFIX,google.com,PROXY
+#   - DOMAIN-KEYWORD,google,PROXY
+#   - DOMAIN,google.com,PROXY
+#   - DOMAIN-SUFFIX,ad.com,REJECT
+#   - SRC-IP-CIDR,192.168.1.201/32,DIRECT
+#   # optional param "no-resolve" for IP rules (GEOIP, IP-CIDR, IP-CIDR6)
+#   - IP-CIDR,127.0.0.0/8,DIRECT
+#   - GEOIP,CN,DIRECT
+#   - DST-PORT,80,DIRECT
+#   - SRC-PORT,7777,DIRECT
+#   - RULE-SET,apple,REJECT # Premium only
+#   - MATCH,PROXY
+rules:
+  - RULE-SET,applications,DIRECT
+  - DOMAIN,clash.razord.top,DIRECT
+  - DOMAIN,yacd.haishan.me,DIRECT
+  - RULE-SET,private,DIRECT
+  - RULE-SET,reject,REJECT
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,apple,DIRECT
+  - RULE-SET,google,DIRECT
+  - RULE-SET,proxy,PROXY
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - RULE-SET,cncidr,DIRECT
+  - RULE-SET,telegramcidr,PROXY
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,PROXY #白名单
