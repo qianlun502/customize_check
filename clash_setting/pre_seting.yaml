@@ -7,7 +7,7 @@ parsers:
           url: 'https://www.google.com/generate_204'
           interval: 2
           strategy: consistent-hashing
-
+  
         - name: ⚖️ 负载均衡-轮询
           type: load-balance
           url: 'https://www.google.com/generate_204'
