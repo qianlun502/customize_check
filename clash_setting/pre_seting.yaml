@@ -1,4 +1,3 @@
-#预处理文件 ,可以自动的处理链接
 parsers:
   - reg: 'slbable$'
     yaml:
@@ -8,24 +7,52 @@ parsers:
           url: 'https://www.google.com/generate_204'
           interval: 2
           strategy: consistent-hashing
+
         - name: ⚖️ 负载均衡-轮询
           type: load-balance
           url: 'https://www.google.com/generate_204'
           interval: 2
           strategy: round-robin
+
         - name: ⚖️ Auto Select
-          type: url-test #自动选择
+          type: url-test
           url: 'https://www.google.com/generate_204'
           interval: 2
           # strategy: round-robin
+      prepend-proxy-groups:
+        - name: ⚖️_Manual_Select #手动选择
+          type: select
+          url: 'https://www.google.com/generate_204'
+          interval: 2
+          # strategy: round-robin
+
         
       commands:
+        - proxy-groups.⚖️_Manual_Select.proxies=[]proxyNames
+        # - proxy-groups.⚖️_Manual_Select.proxies.0+⚖️ Auto Select #根据名字直接插入，这里使用序号直接插入
+        # - proxy-groups.⚖️_Manual_Select.proxies.0+⚖️ 负载均衡-散列
+        # - proxy-groups.⚖️_Manual_Select.proxies.0+⚖️ 负载均衡-轮询
+
         - proxy-groups.⚖️ 负载均衡-散列.proxies=[]proxyNames
-        - proxy-groups.0.proxies.0+⚖️ 负载均衡-散列
+        - proxy-groups.0.proxies.0+⚖️ 负载均衡-散列  #按第0个代理组位置直接插入
+
+
         - proxy-groups.⚖️ 负载均衡-轮询.proxies=[]proxyNames
         - proxy-groups.0.proxies.0+⚖️ 负载均衡-轮询
+
         - proxy-groups.⚖️ Auto Select.proxies=[]proxyNames
         - proxy-groups.0.proxies.0+⚖️ Auto Select
+
+
+
+        # - proxy-groups.⚖️_Manual_Select.name=proxy-groups.5.name
+        # - proxy-groups.0.name=⚖️_Manual_Select
+        # - proxy-groups.⚖️_Manual_Select.proxies.0+⚖️_Manual_Select
+
+        
+       
+
+        
       prepend-rules:
         - RULE-SET,applications,DIRECT
         - DOMAIN,clash.razord.top,DIRECT
@@ -35,16 +62,15 @@ parsers:
         - RULE-SET,icloud,DIRECT
         - RULE-SET,apple,DIRECT
         - RULE-SET,google,DIRECT
-        - RULE-SET,proxy,⚖️ Auto Select
+        - RULE-SET,proxy,⚖️_Manual_Select
         - RULE-SET,direct,DIRECT
         - RULE-SET,lancidr,DIRECT
         - RULE-SET,cncidr,DIRECT
-        - RULE-SET,telegramcidr,⚖️ Auto Select
+        - RULE-SET,telegramcidr,⚖️_Manual_Select
         - GEOIP,LAN,DIRECT
         - GEOIP,CN,DIRECT
-        - MATCH,⚖️ Auto Select
-
-      mix-rule-providers: # clash 规则，https://github.com/Loyalsoldier/clash-rules
+        - MATCH,⚖️_Manual_Select
+      mix-rule-providers:
           reject:
             type: http
             behavior: domain
