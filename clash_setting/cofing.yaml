@@ -13,42 +13,35 @@ dns:
   #   - '*.lan'
   #   - localhost.ptlogin2.qq.com
   use-hosts: true
-  nameserver:
+  default-nameserver:
     - 223.5.5.5
-    - 114.114.114.114
-    # - https://dns.alidns.com/dns-query
-    # - tls://dns.rubyfish.cn:853 #红鱼rubyfish
-    # - tls://13800000000.rubyfish.cn:853
-    #- https://13800000000.rubyfish.cn/
+    - 119.29.29.29
+  nameserver:
+    # - https://doh.pub/dns-query
+    - https://rubyfish.cn/dns-query #红鱼国内，已验证
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query #阿里云
 
   fallback:
-    # 与 nameserver 内的服务器列表同时发起请求，当规则符合 GEOIP 在 CN 以外时，fallback 列表内的域名服务器生效。
-    # - 1.1.1.1 #Cloudflare DNS  https://zhuanlan.zhihu.com/p/53958870
-    # - 8.8.8.8
-    # - tls://13800000000.rubyfish.cn:853
 
-    #- https://13800000000.rubyfish.cn/
-    # - https://doh.dns.sb/dns-query #DNS.SB
-    - https://dns.twnic.tw/dns-query #台湾
-    - 203.112.2.4 #东京
-    - 168.126.63.2 #韩国
+    - 185.222.222.222 #DNS SB 最新的DNS 保证可用
+    - https://dns.rubyfish.cn/dns-query  #红鱼，安卓海外解析
+
     - 216.146.36.36 #甲骨文云
+    # - https://dns.twnic.tw/dns-query #台湾 以下两个
+    - 101.101.101.101
+    - 101.102.103.104
+    
+    - https://public.dns.iij.jp/dns-query #东京 官网验证可用
+    - 203.112.2.4 #东京
+
+    - 168.126.63.2 #韩国
+    # - https://dns.cloudflare.com/dns-query # cloudflare
+    - https://cloudflare-dns.com/dns-query
+   
+
     - 113.205.16.215 #google 防污染
-    - https://dns.rubyfish.cn/dns-query ##红鱼rubyfish
-    # - https://doh.buzz:8000/dns-query
-    # - https://doh.beauty:8000/dns-query
 
-    #下面五个全是 Colud DNS
-    - https://cloudflare-dns.com/dns-query #Cloudflare DNS
-    # - tls://1.1.1.1:853
-    # - tls://1.0.0.1:853
-    # - https://1.1.1.1/dns-query
-    # - https://1.0.0.1/dns-query
-
-    #下面三个全是google
-    # - tls://8.8.8.8:853
-    # - tls://8.8.4.4:853
-    # - https://dns.google/dns-query
 
   fallback-filter:
     geoip: true
